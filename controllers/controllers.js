@@ -3,10 +3,9 @@ const qandas = require('../models/qandas.js');
 module.exports = {
   // List Questions
   getQuestions: (req, res) => {
-    qandas.qandaCollection.findOne()
+    qandas.qandaCollection.findOne({product_id: 59553})
     .then(result => {
       console.log('RESULTS FROM DB:', result)
-      // let mappedResult = result.map(doc => {
         let unixTime = result.date_written.toString().slice(0, -3);
         let convertedDate = new Date(Number(unixTime) * 1000);
         let reducedAnswers = result.answers.reduce((acc, answer) => {
@@ -20,7 +19,9 @@ module.exports = {
               "date": convertedDate,
               "answerer_name": answer.answerer_name,
               "helpfulness": answer.helpful,
-              "photos": answer.photos
+              "photos": answer.photos.map(item => {
+                return item.url;
+              })
             }
           }
         }, {});
@@ -39,7 +40,7 @@ module.exports = {
             }
           ]
         }
-      // })
+
       res.status(200).send(mappedResult);
     })
     .catch(err => {
