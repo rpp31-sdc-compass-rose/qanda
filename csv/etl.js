@@ -9,80 +9,80 @@ let answersFilePath = './csv/answers.csv';
 let answersPhotosFilePath = './csv/answers_photos.csv';
 
 // convert csv to json
-csvtojson()
-  .fromFile(questionsFilePath)
-  .then(csvData => {
-    // converted data here
-    console.log('QUESTIONS CSV DATA:', csvData);
+// csvtojson()
+//   .fromFile(questionsFilePath)
+//   .then(csvData => {
+//     // converted data here
+//     console.log('QUESTIONS CSV DATA:', csvData);
 
-    // connect to Q&A database and load
-    mongodb.connect('mongodb://localhost:27017',
-    { useNewUrlParser: true, useUnifiedTopology: true },
-    (err, client) => {
-      if (err) {
-        throw err;
-      }
-      client
-        .db('qanda')
-        .collection('questions')
-        .insertMany(csvData, (err, res) => {
-          if (err) {
-            throw err;
-          }
-          console.log(`Inserted: ${res.insertedCount} rows`);
-            client.close();
-        })
-    })
-  });
+//     // connect to Q&A database and load
+//     mongodb.connect('mongodb://localhost:27017',
+//     { useNewUrlParser: true, useUnifiedTopology: true },
+//     (err, client) => {
+//       if (err) {
+//         throw err;
+//       }
+//       client
+//         .db('qanda')
+//         .collection('questions')
+//         .insertMany(csvData, (err, res) => {
+//           if (err) {
+//             throw err;
+//           }
+//           console.log(`Inserted: ${res.insertedCount} rows`);
+//             client.close();
+//         })
+//     })
+//   });
 
-  csvtojson()
-  .fromFile(answersFilePath)
-  .then(csvData => {
-    // converted data here
-    console.log('ANSWERS CSV DATA:', csvData);
+  // csvtojson()
+  // .fromFile(answersFilePath)
+  // .then(csvData => {
+  //   // converted data here
+  //   console.log('ANSWERS CSV DATA:', csvData);
 
-    // connect to Q&A database and load
-    mongodb.connect('mongodb://localhost:27017',
-    { useNewUrlParser: true, useUnifiedTopology: true },
-    (err, client) => {
-      if (err) {
-        throw err;
-      }
-      client
-        .db('qanda')
-        .collection('answers')
-        .insertMany(csvData, (err, res) => {
-          if (err) {
-            throw err;
-          }
-          console.log(`Inserted: ${res.insertedCount} rows`);
-            client.close();
-        })
-    })
-  });
+  //   // connect to Q&A database and load
+  //   mongodb.connect('mongodb://localhost:27017',
+  //   { useNewUrlParser: true, useUnifiedTopology: true },
+  //   (err, client) => {
+  //     if (err) {
+  //       throw err;
+  //     }
+  //     client
+  //       .db('qanda')
+  //       .collection('answers')
+  //       .insertMany(csvData, (err, res) => {
+  //         if (err) {
+  //           throw err;
+  //         }
+  //         console.log(`Inserted: ${res.insertedCount} rows`);
+  //           client.close();
+  //       })
+  //   })
+  // });
 
-  csvtojson()
-  .fromFile(answersPhotosFilePath)
-  .then(csvData => {
-    // converted data here
-    console.log('ANSWERS_PHOTOS CSV DATA:', csvData);
+  // csvtojson()
+  // .fromFile(answersPhotosFilePath)
+  // .then(csvData => {
+  //   // converted data here
+  //   console.log('ANSWERS_PHOTOS CSV DATA:', csvData);
 
-    // connect to Q&A database and load
-    mongodb.connect('mongodb://localhost:27017',
-    { useNewUrlParser: true, useUnifiedTopology: true },
-    (err, client) => {
-      if (err) {
-        throw err;
-      }
-      client
-        .db('qanda')
-        .collection('answers_photos')
-        .insertMany(csvData, (err, res) => {
-          if (err) {
-            throw err;
-          }
-          console.log(`Inserted: ${res.insertedCount} rows`);
-            client.close();
-        })
-    })
-  });
+  //   // connect to Q&A database and load
+  //   mongodb.connect('mongodb://localhost:27017',
+  //   { useNewUrlParser: true, useUnifiedTopology: true },
+  //   (err, client) => {
+  //     if (err) {
+  //       throw err;
+  //     }
+  //     client
+  //       .db('qanda')
+  //       .collection('answers_photos')
+  //       .insertMany(csvData, (err, res) => {
+  //         if (err) {
+  //           throw err;
+  //         }
+  //         console.log(`Inserted: ${res.insertedCount} rows`);
+  //           client.close();
+  //       })
+  //   })
+  // });
