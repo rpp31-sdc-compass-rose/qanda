@@ -1,7 +1,7 @@
 const mongodb = require('mongodb').MongoClient;
 const mongoose = require('mongoose');
 const csvtojson = require('csvtojson');
-const qandaSchema = require('../db/index.js');
+// const qandaSchema = require('../db/index.js');
 
 // setup file paths to be read and transformed
 let questionsFilePath = './csv/questions.csv';
