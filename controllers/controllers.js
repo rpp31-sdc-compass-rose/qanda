@@ -4,8 +4,9 @@ const qandas = require('../models/qandas.js');
 module.exports = {
   // List Questions
   getQuestions: (req, res) => {
-    console.log('REQ QUERY IN GET QUESTIONS:', req.query.product_id)
-    qandas.qandaCollection.findOne({product_id: 59553})
+    console.log('REQ QUERY IN GET QUESTIONS:', req.query.product_id);
+    let productID = req.query.product_id;
+    qandas.qandaCollection.findOne({product_id: productID})
     .then(result => {
       // console.log('LIST QUESTIONS RESULTS:', result)
         // let unixTime = result.date_written.toString().slice(0, -3);
@@ -52,8 +53,9 @@ module.exports = {
 
   // List Answers
   getAnswers: (req, res) => {
-    console.log('REQ QUERY IN GET ANSWERS:', req.query.question_id)
-    qandas.qandaCollection.find({"answers.question_id": 1}, {"answers.id": 1, "answers.question_id": 1, "answers.body": 1, "answers.date_written": 1, "answers.answerer_name": 1, "answers.helpful": 1, "answers.photos": 1}).exec()
+    console.log('REQ PARAMS IN GET ANSWERS:', req.params.question_id)
+    let questionID = req.params.question_id;
+    qandas.qandaCollection.find({"answers.question_id": questionID}, {"answers.id": 1, "answers.question_id": 1, "answers.body": 1, "answers.date_written": 1, "answers.answerer_name": 1, "answers.helpful": 1, "answers.photos": 1}).exec()
     .then(results => {
       console.log('GET ANSWERS RESULT:', results);
       let mappedAnswers = results[0].answers.map(answer => {

@@ -14,10 +14,10 @@ app.get('/', (req, res) => {
   res.status(200).send('Welcome to Atelier API!');
 })
 // get all questions by product_id
-app.get('/qa/questions', controllers.getQuestions);
+app.get('/qa/questions/', controllers.getQuestions);
 
 // get all answers by question_id
-app.get('/qa/questions/answers', controllers.getAnswers);
+app.get('/qa/questions/:question_id/answers', controllers.getAnswers);
 
 // get all answers by question_id
 app.post('/questions', controllers.postQuestion);

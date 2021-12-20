@@ -4,11 +4,11 @@ const csvtojson = require('csvtojson');
 // const qandaSchema = require('../db/index.js');
 
 // setup file paths to be read and transformed
-let questionsFilePath = './csv/questions.csv';
-let answersFilePath = './csv/answers.csv';
-let answersPhotosFilePath = './csv/answers_photos.csv';
+// let questionsFilePath = './csv/questions.csv';
+// let answersFilePath = './csv/answers.csv';
+// let answersPhotosFilePath = './csv/answers_photos.csv';
 
-// convert csv to json
+// // convert csv to json
 // csvtojson()
 //   .fromFile(questionsFilePath)
 //   .then(csvData => {
