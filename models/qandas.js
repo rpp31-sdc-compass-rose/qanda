@@ -1,8 +1,14 @@
 const mongoose = require('mongoose');
 
 let qandaSchema = new mongoose.Schema({
-  id: Number,
-  product_id: Number,
+  id: {
+    type: Number,
+    required: true
+  },
+  product_id: {
+    type: Number,
+    required: true
+  },
   body: String,
   date_written: Date,
   asker_name: String,
@@ -11,8 +17,14 @@ let qandaSchema = new mongoose.Schema({
   helpful: Number,
   answers: [
     {
-      id: Number,
-      question_id: Number,
+      id: {
+        type: Number,
+        required: true
+      },
+      question_id: {
+        type: Number,
+        required: true
+      },
       body: String,
       date_written: Date,
       answerer_name: String,
@@ -21,8 +33,14 @@ let qandaSchema = new mongoose.Schema({
       helpful: Number,
       photos: [
         {
-          id: Number,
-          answer_id: Number,
+          id: {
+            type: Number,
+            required: true
+          },
+          answer_id: {
+            type: Number,
+            required: true
+          },
           url: String
         }
       ]
