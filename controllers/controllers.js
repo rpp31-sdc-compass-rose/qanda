@@ -59,7 +59,7 @@ module.exports = {
     let questionID = req.params.question_id;
     qandas.qandaCollection.find({"answers.question_id": questionID}, {"answers.id": 1, "answers.question_id": 1, "answers.body": 1, "answers.date_written": 1, "answers.answerer_name": 1, "answers.helpful": 1, "answers.photos": 1}).exec()
     .then(results => {
-      console.log('GET ANSWERS RESULT:', results);
+      // console.log('GET ANSWERS RESULT:', results);
       let mappedAnswers = results[0].answers.map(answer => {
         return {
           "answer_id": answer.id,
