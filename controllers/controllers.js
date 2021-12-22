@@ -4,7 +4,7 @@ const db = require('../models/qandas.js');
 module.exports = {
   // List Questions
   getQuestions: (req, res) => {
-    console.log('REQ QUERY IN GET QUESTIONS:', req.query.product_id);
+    console.log('REQ QUERY IN GET QUESTIONS:', req.query);
     let productID = req.query.product_id;
     db.qandaCollection.find({product_id: productID})
     .then(result => {
@@ -56,6 +56,7 @@ module.exports = {
   // List Answers
   getAnswers: (req, res) => {
     console.log('REQ PARAMS IN GET ANSWERS:', req.params.question_id)
+    console.log('REQ QUERY IN GET ANSWERS:', req.query)
     let questionID = req.params.question_id;
     db.qandaCollection.find({"answers.question_id": questionID}, {"answers.id": 1, "answers.question_id": 1, "answers.body": 1, "answers.date_written": 1, "answers.answerer_name": 1, "answers.helpful": 1, "answers.photos": 1}).exec()
     .then(results => {
@@ -74,8 +75,8 @@ module.exports = {
       })
       let mappedResult = {
         "question": results[0].answers[0].question_id,
-        "page": null,
-        "count": null,
+        "page": req.query.page,
+        "count": req.query.count,
         "results": mappedAnswers
       }
       res.status(200).send(mappedResult);
@@ -97,11 +98,11 @@ module.exports = {
         latestQuestionID = result[0].id;
         db.qandaCollection.create({
           id: latestQuestionID + 1,
-          product_id: 0000000000,
-          body: "Here's a new question!",
+          product_id: req.body.product_id,
+          body: req.body.body,
           date_written: new Date(),
-          asker_name: 'Cool3000',
-          asker_email: 'cool3000@gmail.com',
+          asker_name: req.body.name,
+          asker_email: req.body.email,
           reported: 0,
           helpful: 0,
           answers: []
@@ -112,10 +113,12 @@ module.exports = {
         })
         .catch(err => {
            console.log(err)
+           res.status(500).send(err);
           })
       })
       .catch(err => {
         console.log(err);
+        res.status(500).send(err);
       })
 
 

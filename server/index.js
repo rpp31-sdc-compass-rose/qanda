@@ -1,13 +1,18 @@
 const express = require('express');
+const compression = require('compression');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 const app = express();
 const port = 3030;
 const db = require('../db/index.js');
-const etl = require('../csv/etl.js');
+// const etl = require('../csv/etl.js');
 const controllers = require('../controllers/controllers.js');
 
 // middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(compression());
+app.use(cookieParser());
 
 // routes
 app.get('/', (req, res) => {

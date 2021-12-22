@@ -78,87 +78,89 @@ let qandaSchema = new mongoose.Schema({
 },
 { collection: 'qandas' })
 
+qandaSchema.index({id: -1, "answers.id": -1})
+
 let allQandAs = mongoose.model('qandas', qandaSchema);
 
-let testSchema = new mongoose.Schema({
-  id: {
-    type: Number,
-    index: true,
-    unique: true,
-    required: true
-  },
-  product_id: {
-    type: Number,
-    index: true,
-    required: true
-  },
-  body: {
-    type: String,
-    required: true
-  },
-  date_written: Date,
-  asker_name: {
-    type: String,
-    required: true
-  },
-  asker_email: {
-    type: String,
-    required: true
-  },
-  reported: Number,
-  helpful: Number,
-  answers: [
-    {
-      id: {
-        type: Number,
-        index: true,
-        unique: true,
-        sparse: true,
-        required: true
-      },
-      question_id: {
-        type: Number,
-        index: true,
-        required: true
-      },
-      body: {
-        type: String,
-        required: true
-      },
-      date_written: Date,
-      answerer_name: {
-        type: String,
-        required: true
-      },
-      answerer_email: {
-        type: String,
-        required: true
-      },
-      reported: Number,
-      helpful: Number,
-      photos: [
-        {
-          id: {
-            type: Number,
-            index: true,
-            unique: true,
-            sparse: true,
-            required: true
-          },
-          answer_id: {
-            type: Number,
-            index: true,
-            required: true
-          },
-          url: String
-        }
-      ]
-    }
-  ]
-},
-{ collection: 'tests' })
+// let testSchema = new mongoose.Schema({
+//   id: {
+//     type: Number,
+//     index: true,
+//     unique: true,
+//     required: true
+//   },
+//   product_id: {
+//     type: Number,
+//     index: true,
+//     required: true
+//   },
+//   body: {
+//     type: String,
+//     required: true
+//   },
+//   date_written: Date,
+//   asker_name: {
+//     type: String,
+//     required: true
+//   },
+//   asker_email: {
+//     type: String,
+//     required: true
+//   },
+//   reported: Number,
+//   helpful: Number,
+//   answers: [
+//     {
+//       id: {
+//         type: Number,
+//         index: true,
+//         unique: true,
+//         sparse: true,
+//         required: true
+//       },
+//       question_id: {
+//         type: Number,
+//         index: true,
+//         required: true
+//       },
+//       body: {
+//         type: String,
+//         required: true
+//       },
+//       date_written: Date,
+//       answerer_name: {
+//         type: String,
+//         required: true
+//       },
+//       answerer_email: {
+//         type: String,
+//         required: true
+//       },
+//       reported: Number,
+//       helpful: Number,
+//       photos: [
+//         {
+//           id: {
+//             type: Number,
+//             index: true,
+//             unique: true,
+//             sparse: true,
+//             required: true
+//           },
+//           answer_id: {
+//             type: Number,
+//             index: true,
+//             required: true
+//           },
+//           url: String
+//         }
+//       ]
+//     }
+//   ]
+// },
+// { collection: 'tests' })
 
-let testCollection = mongoose.model('tests', testSchema);
+// let testCollection = mongoose.model('tests', testSchema);
 
 // CREATE A NEW QUESTIONS
 // testCollection.create({
