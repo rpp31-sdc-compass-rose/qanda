@@ -19,8 +19,8 @@ app.get('/qa/questions/', controllers.getQuestions);
 // get all answers by question_id
 app.get('/qa/questions/:question_id/answers', controllers.getAnswers);
 
-// get all answers by question_id
-app.post('/questions', controllers.postQuestion);
+// post a question
+app.post('/qa/questions', controllers.postQuestion);
 
 app.listen(port, () => {
   console.log(`API is listening on port ${port}!`)

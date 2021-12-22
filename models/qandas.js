@@ -3,48 +3,71 @@ const mongoose = require('mongoose');
 let qandaSchema = new mongoose.Schema({
   id: {
     type: Number,
+    index: true,
     unique: true,
     required: true
   },
   product_id: {
     type: Number,
-    unique: true,
+    index: true,
     required: true
   },
-  body: String,
+  body: {
+    type: String,
+    required: true
+  },
   date_written: Date,
-  asker_name: String,
-  asker_email: String,
+  asker_name: {
+    type: String,
+    required: true
+  },
+  asker_email: {
+    type: String,
+    required: true
+  },
   reported: Number,
   helpful: Number,
   answers: [
     {
       id: {
         type: Number,
+        index: true,
         unique: true,
+        sparse: true,
         required: true
       },
       question_id: {
         type: Number,
-        unique: true,
+        index: true,
         required: true
       },
-      body: String,
+      body: {
+        type: String,
+        required: true
+      },
       date_written: Date,
-      answerer_name: String,
-      answerer_email: String,
+      answerer_name: {
+        type: String,
+        required: true
+      },
+      answerer_email: {
+        type: String,
+        required: true
+      },
       reported: Number,
       helpful: Number,
       photos: [
         {
           id: {
             type: Number,
+            index: true,
             unique: true,
+            sparse: true,
             required: true
           },
           answer_id: {
             type: Number,
-            unique: true,
+            index: true,
             required: true
           },
           url: String
@@ -60,48 +83,71 @@ let allQandAs = mongoose.model('qandas', qandaSchema);
 let testSchema = new mongoose.Schema({
   id: {
     type: Number,
+    index: true,
     unique: true,
     required: true
   },
   product_id: {
     type: Number,
-    unique: true,
+    index: true,
     required: true
   },
-  body: String,
+  body: {
+    type: String,
+    required: true
+  },
   date_written: Date,
-  asker_name: String,
-  asker_email: String,
+  asker_name: {
+    type: String,
+    required: true
+  },
+  asker_email: {
+    type: String,
+    required: true
+  },
   reported: Number,
   helpful: Number,
   answers: [
     {
       id: {
         type: Number,
+        index: true,
         unique: true,
+        sparse: true,
         required: true
       },
       question_id: {
         type: Number,
-        unique: true,
+        index: true,
         required: true
       },
-      body: String,
+      body: {
+        type: String,
+        required: true
+      },
       date_written: Date,
-      answerer_name: String,
-      answerer_email: String,
+      answerer_name: {
+        type: String,
+        required: true
+      },
+      answerer_email: {
+        type: String,
+        required: true
+      },
       reported: Number,
       helpful: Number,
       photos: [
         {
           id: {
             type: Number,
+            index: true,
             unique: true,
+            sparse: true,
             required: true
           },
           answer_id: {
             type: Number,
-            unique: true,
+            index: true,
             required: true
           },
           url: String
@@ -113,26 +159,86 @@ let testSchema = new mongoose.Schema({
 { collection: 'tests' })
 
 let testCollection = mongoose.model('tests', testSchema);
+
+// CREATE A NEW QUESTIONS
 // testCollection.create({
-//   id: 7,
-//   product_id: 107,
-//   body: "well this is a new question!"
+//   id: 5,
+//   product_id: 55,
+//   body: "Here's a new question!",
+//   date_written: new Date(),
+//   asker_name: 'Cool3000',
+//   asker_email: 'cool3000@gmail.com',
+//   reported: 0,
+//   helpful: 0,
+//   answers: []
 // })
 // .then(results => { console.log(results)} ).catch(err => { console.log(err) })
 
-// testCollection.updateOne({product_id: 107}, { $addToSet: { answers: {
-//   id: 123,
-//   question_id: 321,
-//   body: "well here is an answer!"
+// ADD AN ANSWER TO A QUESTION
+// testCollection.updateOne({id: 5}, { $addToSet: { answers: {
+//   id: 7,
+//   question_id: 5,
+//   body: "Here is an answer!",
+//   date_written: new Date(),
+//   answerer_name: '',
+//   answerer_email: 'answerGuy@gmail.com',
+//   reported: 0,
+//   helpful: 0,
+//   photos: []
 // }
 // }}).exec().then(results => { console.log(results)} ).catch(err => { console.log(err) })
 
-// testCollection.updateOne({product_id: 107}, { $addToSet: { "answers.0.photos": {
-//   id: 456,
-//   answer_id: 654,
-//   url: 'it even stringifies numbers!'
+// ADD A PHOTO TO AN ANSWER
+// testCollection.updateOne({"answers.id": 545}, { $addToSet: { "answers.0.photos": {
+//   id: 142,
+//   answer_id: 545,
+//   url: 'it even stringifies numbers 1231243!'
 // }
 // }}).exec().then(results => { console.log(results)} ).catch(err => { console.log(err) })
+
+
+// MAKING QUESTIONS REPORTED
+// testCollection.updateOne({id: 5},
+//   { $inc:
+//     { reported: 1
+//     }
+//   }).exec().then(results => { console.log(results)} ).catch(err => { console.log(err) })
+
+
+// MAKE A QUESTION HELPFUL
+// testCollection.updateOne({id: 5},
+//   { $inc:
+//     { helpful: 1
+//     }
+//   }).exec().then(results => { console.log(results)} ).catch(err => { console.log(err) })
+
+// MAKING ANSWERS REPORTED
+// testCollection.updateOne(
+//   {
+//     "answers.id": 6,
+//     answers: { $elemMatch: {
+//       id: 5
+//     }}
+//   },
+//   { $inc:
+//     { "answers.$.reported": 1
+//     }
+//   }).exec().then(results => { console.log(results)} ).catch(err => { console.log(err) })
+
+  // MAKING ANSWERS HELPFUL
+  // testCollection.updateOne(
+  //   {
+  //     "answers.id": 7,
+  //     answers: { $elemMatch: {
+  //       id: 7
+  //     }}
+  //   },
+  //   { $inc:
+  //     { "answers.$.helpful": 1
+  //     }
+  //   }).exec().then(results => { console.log(results)} ).catch(err => { console.log(err) })
+
+
 
 // IS VALIDATION WORKING FOR UPDATE?
 

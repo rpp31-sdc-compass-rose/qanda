@@ -1,4 +1,4 @@
-const qandas = require('../models/qandas.js');
+const db = require('../models/qandas.js');
 // const db = require('../db/index.js');
 
 module.exports = {
@@ -6,7 +6,7 @@ module.exports = {
   getQuestions: (req, res) => {
     console.log('REQ QUERY IN GET QUESTIONS:', req.query.product_id);
     let productID = req.query.product_id;
-    qandas.qandaCollection.find({product_id: productID})
+    db.qandaCollection.find({product_id: productID})
     .then(result => {
       // console.log('LIST QUESTIONS RESULTS:', result)
         // let unixTime = result.date_written.toString().slice(0, -3);
@@ -57,7 +57,7 @@ module.exports = {
   getAnswers: (req, res) => {
     console.log('REQ PARAMS IN GET ANSWERS:', req.params.question_id)
     let questionID = req.params.question_id;
-    qandas.qandaCollection.find({"answers.question_id": questionID}, {"answers.id": 1, "answers.question_id": 1, "answers.body": 1, "answers.date_written": 1, "answers.answerer_name": 1, "answers.helpful": 1, "answers.photos": 1}).exec()
+    db.qandaCollection.find({"answers.question_id": questionID}, {"answers.id": 1, "answers.question_id": 1, "answers.body": 1, "answers.date_written": 1, "answers.answerer_name": 1, "answers.helpful": 1, "answers.photos": 1}).exec()
     .then(results => {
       // console.log('GET ANSWERS RESULT:', results);
       let mappedAnswers = results[0].answers.map(answer => {
@@ -90,6 +90,34 @@ module.exports = {
   // Add a Question
   postQuestion: (req, res) => {
     console.log('REQ BODY:', req.body);
-    res.status(201).send('Question posted!')
+    let latestQuestionID;
+    db.qandaCollection.find().sort({id: -1}).limit(1)
+      .then(result => {
+        console.log(result[0].id)
+        latestQuestionID = result[0].id;
+        db.qandaCollection.create({
+          id: latestQuestionID + 1,
+          product_id: 0000000000,
+          body: "Here's a new question!",
+          date_written: new Date(),
+          asker_name: 'Cool3000',
+          asker_email: 'cool3000@gmail.com',
+          reported: 0,
+          helpful: 0,
+          answers: []
+        })
+        .then(results => {
+          console.log(results)
+          res.status(201).send('Question posted!')
+        })
+        .catch(err => {
+           console.log(err)
+          })
+      })
+      .catch(err => {
+        console.log(err);
+      })
+
+
   }
 }
