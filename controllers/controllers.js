@@ -1,6 +1,7 @@
 const db = require('../models/qandas.js');
 // const db = require('../db/index.js');
 
+
 module.exports = {
   // List Questions
   getQuestions: (req, res) => {
@@ -90,7 +91,7 @@ module.exports = {
 
   // Add a Question
   postQuestion: (req, res) => {
-    console.log('REQ BODY:', req.body);
+    console.log('POST QUESTION REQ BODY:', req.body);
     let latestQuestionID;
     db.qandaCollection.find().sort({id: -1}).limit(1)
       .then(result => {
@@ -109,7 +110,7 @@ module.exports = {
         })
         .then(results => {
           console.log(results)
-          res.status(201).send('Question posted!')
+          res.status(201).send('Question posted!');
         })
         .catch(err => {
            console.log(err)
@@ -120,7 +121,43 @@ module.exports = {
         console.log(err);
         res.status(500).send(err);
       })
-
+  },
+  // Add an Answer
+  postAnswer: (req, res) => {
+    console.log('POST ANSWER REQ PARAMS:', req.params)
+    console.log('POST ANSWER REQ BODY:', req.body);
+    let questionID = req.params.question_id;
+    let latestAnswerID;
+    db.qandaCollection.find().sort({"answers.id": -1}).limit(1)
+      .then(result => {
+        console.log(result);
+        latestAnswerID = result[0].answers[result[0].answers.length - 1].id;
+        console.log('LATEST ANSWER:', latestAnswerID);
+        db.qandaCollection.updateOne({id: questionID}, { $addToSet: { answers: {
+          id: latestAnswerID + 1,
+          question_id: questionID,
+          body: req.body.body,
+          date_written: new Date(),
+          answerer_name: req.body.name,
+          answerer_email: req.body.email,
+          reported: 0,
+          helpful: 0,
+          photos: []
+        }
+        }})
+        .exec()
+        .then(results => {
+          console.log(results);
+          res.status(201).send('Answer posted!')
+        }).catch(err => {
+          console.log(err);
+          res.status(500).send(err);
+        })
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).send(err);
+      })
 
   }
 }

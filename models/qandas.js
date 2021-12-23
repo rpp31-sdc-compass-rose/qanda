@@ -78,7 +78,8 @@ let qandaSchema = new mongoose.Schema({
 },
 { collection: 'qandas' })
 
-qandaSchema.index({id: -1, "answers.id": -1})
+qandaSchema.index({id: -1});
+qandaSchema.index({"answers.id": -1});
 
 let allQandAs = mongoose.model('qandas', qandaSchema);
 
@@ -162,7 +163,7 @@ let allQandAs = mongoose.model('qandas', qandaSchema);
 
 // let testCollection = mongoose.model('tests', testSchema);
 
-// CREATE A NEW QUESTIONS
+// CREATE A NEW QUESTION
 // testCollection.create({
 //   id: 5,
 //   product_id: 55,

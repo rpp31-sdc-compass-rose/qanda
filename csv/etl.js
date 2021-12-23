@@ -1,6 +1,6 @@
-const mongodb = require('mongodb').MongoClient;
-const mongoose = require('mongoose');
-const csvtojson = require('csvtojson');
+// const mongodb = require('mongodb').MongoClient;
+// const mongoose = require('mongoose');
+// const csvtojson = require('csvtojson');
 // const qandaSchema = require('../db/index.js');
 
 // setup file paths to be read and transformed

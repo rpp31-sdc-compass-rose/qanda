@@ -27,6 +27,9 @@ app.get('/qa/questions/:question_id/answers', controllers.getAnswers);
 // post a question
 app.post('/qa/questions', controllers.postQuestion);
 
+//post an answer
+app.post('/qa/questions/:question_id/answers', controllers.postAnswer);
+
 app.listen(port, () => {
   console.log(`API is listening on port ${port}!`)
 });
