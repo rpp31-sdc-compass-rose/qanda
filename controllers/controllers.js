@@ -96,9 +96,9 @@ module.exports = {
     db.qandaCollection.find().sort({id: -1}).limit(1)
       .then(result => {
         console.log(result[0].id)
-        latestQuestionID = result[0].id;
+        latestQuestionID = result[0].id + 1;
         db.qandaCollection.create({
-          id: latestQuestionID + 1,
+          id: latestQuestionID,
           product_id: req.body.product_id,
           body: req.body.body,
           date_written: new Date(),
@@ -110,7 +110,7 @@ module.exports = {
         })
         .then(results => {
           console.log(results)
-          res.status(201).send('Question posted!');
+          res.status(201).send(`Question ${latestQuestionID} posted!`);
         })
         .catch(err => {
            console.log(err)
@@ -131,10 +131,10 @@ module.exports = {
     db.qandaCollection.find().sort({"answers.id": -1}).limit(1)
       .then(result => {
         console.log(result);
-        latestAnswerID = result[0].answers[result[0].answers.length - 1].id;
+        latestAnswerID = result[0].answers[result[0].answers.length - 1].id + 1;
         console.log('LATEST ANSWER:', latestAnswerID);
         db.qandaCollection.updateOne({id: questionID}, { $addToSet: { answers: {
-          id: latestAnswerID + 1,
+          id: latestAnswerID,
           question_id: questionID,
           body: req.body.body,
           date_written: new Date(),
@@ -148,7 +148,7 @@ module.exports = {
         .exec()
         .then(results => {
           console.log(results);
-          res.status(201).send('Answer posted!')
+          res.status(201).send(`Answer ${latestAnswerID} posted!`)
         }).catch(err => {
           console.log(err);
           res.status(500).send(err);
@@ -158,6 +158,96 @@ module.exports = {
         console.log(err);
         res.status(500).send(err);
       })
+  },
 
+  // Mark question as helpful
+  helpfulQuestion: (req, res) => {
+    console.log('REQ PARAMS IN HELPFUL QUESTION:', req.params);
+    let questionID = req.params.question_id;
+    db.qandaCollection.updateOne({id: questionID},
+      { $inc:
+        { helpful: 1 }
+      })
+      .exec()
+      .then(results => {
+         console.log(results);
+         res.status(204).send(`Question ${questionID} marked as helpful!`)
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).send(err);
+      })
+  },
+
+  // Report a question
+  reportQuestion: (req, res) => {
+    console.log('REQ PARAMS IN REPORT QUESTION:', req.params);
+    let questionID = req.params.question_id;
+    db.qandaCollection.updateOne({id: questionID},
+    { $inc:
+      { reported: 1 }
+    })
+    .exec()
+    .then(results => {
+      console.log(results);
+      res.status(204).send(`Question ${questionID} reported!`);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).send(err);
+    })
+  },
+
+  // Mark answer as helpful
+  helpfulAnswer: (req, res) => {
+    console.log('REQ PARAMS IN HELPFUL ANSWER:', req.params);
+    let answerID = req.params.answer_id;
+    db.qandaCollection.updateOne(
+    {
+      "answers.id": answerID,
+      answers: { $elemMatch: {
+        id: answerID
+      }}
+    },
+    { $inc:
+      { "answers.$.helpful": 1
+      }
+    })
+    .exec()
+    .then(results => {
+      console.log(results)
+      res.status(204).send(`Answer ${answerID} marked as helpful!`);
+    })
+    .catch(err => {
+      console.log(err)
+      res.status(500).send(err);
+    })
+  },
+
+  // Report an answers
+  reportAnswer: (req, res) => {
+    console.log('REQ PARAMS IN REPORT ANSWER:', req.params);
+    let answerID = req.params.answer_id;
+    db.qandaCollection.updateOne(
+    {
+      "answers.id": answerID,
+      answers: { $elemMatch: {
+        id: answerID
+      }}
+    },
+    { $inc:
+      { "answers.$.reported": 1
+      }
+    })
+    .exec()
+    .then(results => {
+      console.log(results);
+      res.status(204).send(`Answer ${answerID} reported!`);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).send(err);
+    })
   }
+
 }

@@ -30,6 +30,19 @@ app.post('/qa/questions', controllers.postQuestion);
 //post an answer
 app.post('/qa/questions/:question_id/answers', controllers.postAnswer);
 
+// mark question as helpful
+app.put('/qa/questions/:question_id/helpful', controllers.helpfulQuestion);
+
+// report a question
+app.put('/qa/questions/:question_id/report', controllers.reportQuestion);
+
+// mark answer as helpful
+app.put('/qa/answers/:answer_id/helpful', controllers.helpfulAnswer);
+
+// report an answer
+app.put('/qa/answers/:answer_id/report', controllers.reportAnswer);
+
+// Run server on port
 app.listen(port, () => {
   console.log(`API is listening on port ${port}!`)
 });
