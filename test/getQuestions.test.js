@@ -58,7 +58,6 @@ describe('GET /qa/questions/', () => {
 
     it('sends back the correct data by product ID', async () => {
       expect(response.body.product_id).toEqual(correctQuery.product_id.toString());
-      expect(response.body.results.length).toBeGreaterThan(0);
     })
 
     it('sends back an array of object results', async () => {
@@ -67,7 +66,7 @@ describe('GET /qa/questions/', () => {
     })
 
     it('each object has correct return data for client', async () => {
-      for (var i = 0; i < response.body.results.length; i++) {
+      for (let i = 0; i < response.body.results.length; i++) {
         expect(typeof response.body.results[i]).toBe('object');
         expect(response.body.results[i].question_id).toBeDefined();
         expect(response.body.results[i].question_body).toBeDefined();
