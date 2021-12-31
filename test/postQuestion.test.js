@@ -30,4 +30,34 @@ describe('POST /qa/questions', () => {
     })
   })
 
+  let correctBody;
+  let response;
+  beforeAll(async () => {
+    correctBody = {
+      body: 'Test Question Here!',
+      name: 'Tester123',
+      email: 'Tester123@gmail.com',
+      product_id: 1
+    };
+    response = await request(app)
+    .post('/qa/questions/')
+    .send(correctBody)
+  })
+
+  describe('content and data', () => {
+    it('sends a message that the question was posted', () => {
+      expect(response.headers['content-type']).toEqual(expect.stringContaining('text/html'))
+      expect(response.text).toMatch(/posted/i)
+    })
+
+    it('contains the correct information to be posted', () => {
+      request(app)
+      .post('/qa/questions/')
+      .send(correctBody)
+      .serialize(obj => {
+        console.log('SERIALIZED HERE:', obj)
+      })
+    })
+  })
+
 })

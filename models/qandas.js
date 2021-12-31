@@ -81,87 +81,11 @@ let qandaSchema = new mongoose.Schema({
 qandaSchema.index({id: -1});
 qandaSchema.index({"answers.id": -1});
 
+// PRODUCTION MODEL
 let allQandAs = mongoose.model('qandas', qandaSchema);
 
-// let testSchema = new mongoose.Schema({
-//   id: {
-//     type: Number,
-//     index: true,
-//     unique: true,
-//     required: true
-//   },
-//   product_id: {
-//     type: Number,
-//     index: true,
-//     required: true
-//   },
-//   body: {
-//     type: String,
-//     required: true
-//   },
-//   date_written: Date,
-//   asker_name: {
-//     type: String,
-//     required: true
-//   },
-//   asker_email: {
-//     type: String,
-//     required: true
-//   },
-//   reported: Number,
-//   helpful: Number,
-//   answers: [
-//     {
-//       id: {
-//         type: Number,
-//         index: true,
-//         unique: true,
-//         sparse: true,
-//         required: true
-//       },
-//       question_id: {
-//         type: Number,
-//         index: true,
-//         required: true
-//       },
-//       body: {
-//         type: String,
-//         required: true
-//       },
-//       date_written: Date,
-//       answerer_name: {
-//         type: String,
-//         required: true
-//       },
-//       answerer_email: {
-//         type: String,
-//         required: true
-//       },
-//       reported: Number,
-//       helpful: Number,
-//       photos: [
-//         {
-//           id: {
-//             type: Number,
-//             index: true,
-//             unique: true,
-//             sparse: true,
-//             required: true
-//           },
-//           answer_id: {
-//             type: Number,
-//             index: true,
-//             required: true
-//           },
-//           url: String
-//         }
-//       ]
-//     }
-//   ]
-// },
-// { collection: 'tests' })
-
-// let testCollection = mongoose.model('tests', testSchema);
+// DEVELOPMENT/TEST MODEL
+let testQandAs = mongoose.model('test', qandaSchema);
 
 // CREATE A NEW QUESTION
 // testCollection.create({
@@ -247,6 +171,7 @@ let allQandAs = mongoose.model('qandas', qandaSchema);
 
 
 module.exports = {
-  qandaCollection: allQandAs
+  qandaCollection: allQandAs,
+  testCollection: testQandAs
 }
 
