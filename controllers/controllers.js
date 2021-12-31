@@ -1,4 +1,5 @@
 const db = require('../models/qandas.js');
+const services = require('../db/services.js');
 // const db = require('../db/index.js');
 
 
@@ -7,51 +8,16 @@ module.exports = {
   getQuestions: (req, res) => {
     console.log('REQ QUERY IN GET QUESTIONS:', req.query);
     let productID = req.query.product_id;
-    db.qandaCollection.find({product_id: productID})
+    services.getAllQuestions(productID)
     .then(result => {
-      // console.log('LIST QUESTIONS RESULTS:', result)
-        // let unixTime = result.date_written.toString().slice(0, -3);
-        // let convertedDate = new Date(Number(unixTime) * 1000);
-        let mappedResult = {
-          "product_id": result[0].product_id.toString(),
-          "results": []
-        }
-        for (let i = 0; i < result.length; i++) {
-          let reducedAnswers = result[i].answers.reduce((acc, answer) => {
-            let stringId = answer.id;
-            // let unixTime = answer.date_written.toString().slice(0, -3);
-            // let convertedDate = new Date(Number(unixTime) * 1000);
-            return { ...acc,
-              [stringId]: {
-                "id": answer.id,
-                "body": answer.body,
-                "date": answer.date_written,
-                "answerer_name": answer.answerer_name,
-                "helpfulness": answer.helpful,
-                "photos": answer.photos.map(item => {
-                  return item.url;
-                })
-              }
-            }
-          }, {});
-          let resultsObjects = {
-            "question_id": result[i].id,
-            "question_body": result[i].body,
-            "question_date": result[i].date_written,
-            "asker_name": result[i].asker_name,
-            "question_helpfulness": result[i].helpful,
-            "reported": result[i].reported === 0 ? false : true,
-            "answers": reducedAnswers
-            }
-          mappedResult.results.push(resultsObjects);
-          }
-        // console.log('REDUCED ANSWERS:', reducedAnswers);
-        res.status(200).send(mappedResult);
-      })
-      .catch(err => {
-      console.log(err);
+      console.log(result)
+      res.status(200).send(result)
+    })
+    .catch(err => {
+      console.log(err)
       res.status(500).send(err);
     })
+
   },
 
   // List Answers
