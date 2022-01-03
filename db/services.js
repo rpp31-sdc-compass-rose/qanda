@@ -45,7 +45,114 @@ module.exports = {
         return mappedResult;
       })
       .catch(err => {
-      console.log(err);
+      return err;
     })
+  },
+
+  getAllAnswers: (questionID, page, count) => {
+    return db.qandaCollection.find({"answers.question_id": questionID}, {"answers.id": 1, "answers.question_id": 1, "answers.body": 1, "answers.date_written": 1, "answers.answerer_name": 1, "answers.helpful": 1, "answers.photos": 1}).exec()
+    .then(results => {
+      // console.log('GET ANSWERS RESULT:', results);
+      let mappedAnswers = results[0].answers.map(answer => {
+        return {
+          "answer_id": answer.id,
+          "body": answer.body,
+          "date": answer.date_written,
+          "answerer_name": answer.answerer_name,
+          "helpfulness": answer.helpful,
+          "photos": answer.photos.map(item => {
+            return { "id": item.id, "url": item.url }
+          })
+        }
+      })
+      let mappedResult = {
+        "question": results[0].answers[0].question_id,
+        "page": page,
+        "count": count,
+        "results": mappedAnswers
+      }
+      return mappedResult;
+    })
+    .catch(err => {
+      return;
+    })
+  },
+
+  postOneQuestion: (productID, body, name, email) => {
+    let latestQuestionID;
+    return db.qandaCollection.find().sort({id: -1}).limit(1)
+      .then(result => {
+        console.log(result[0].id)
+        latestQuestionID = result[0].id + 1;
+        return db.qandaCollection.create({
+          id: latestQuestionID,
+          product_id: productID,
+          body: body,
+          date_written: new Date(),
+          asker_name: name,
+          asker_email: email,
+          reported: 0,
+          helpful: 0,
+          answers: []
+        })
+        .then(results => {
+          return results;
+        })
+        .catch(err => {
+          return;
+        })
+      })
+      .catch(err => {
+        return;
+      })
+  },
+
+  postOneAnswer: (questionID, body, name, email) => {
+    let latestAnswerID;
+    return db.qandaCollection.find().sort({"answers.id": -1}).limit(1)
+      .then(result => {
+        console.log(result);
+        latestAnswerID = result[0].answers[result[0].answers.length - 1].id + 1;
+        console.log('LATEST ANSWER:', latestAnswerID);
+        return db.qandaCollection.updateOne({id: questionID}, { $addToSet: { answers: {
+          id: latestAnswerID,
+          question_id: questionID,
+          body: body,
+          date_written: new Date(),
+          answerer_name: name,
+          answerer_email: email,
+          reported: 0,
+          helpful: 0,
+          photos: []
+        }
+        }})
+        .exec()
+        .then(results => {
+          return results;
+        }).catch(err => {
+          return;
+        })
+      })
+      .catch(err => {
+        return;
+      })
+  },
+
+  putQuestionHelpful: () => {
+
+  },
+
+  putQuestionReported: () => {
+
+  },
+
+  putAnswerHelpful: () => {
+
+  },
+
+  putAnswerReported: () => {
+
   }
+
+
 }

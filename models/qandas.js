@@ -81,11 +81,16 @@ let qandaSchema = new mongoose.Schema({
 qandaSchema.index({id: -1});
 qandaSchema.index({"answers.id": -1});
 
-// PRODUCTION MODEL
-let allQandAs = mongoose.model('qandas', qandaSchema);
+console.log('NODE ENVIRONMENT VARIABLE:', process.env.NODE_ENV);
 
-// DEVELOPMENT/TEST MODEL
-let testQandAs = mongoose.model('test', qandaSchema);
+let allQandAs;
+// PRODUCTION MODEL
+if (process.env.NODE_ENV === 'development') {
+  allQandAs = mongoose.model('qandas', qandaSchema);
+}
+if (process.env.NODE_ENV === 'test') {
+  allQandAs = mongoose.model('tests', qandaSchema);
+}
 
 // CREATE A NEW QUESTION
 // testCollection.create({
@@ -171,7 +176,7 @@ let testQandAs = mongoose.model('test', qandaSchema);
 
 
 module.exports = {
-  qandaCollection: allQandAs,
-  testCollection: testQandAs
+  qandaCollection: allQandAs
+  // testCollection: testQandAs
 }
 
