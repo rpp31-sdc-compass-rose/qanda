@@ -1,5 +1,5 @@
 const request = require('supertest');
-const app = require('../server/app.js');
+const app = require('../../server/app.js');
 
 describe('POST /qa/questions', () => {
 
@@ -46,18 +46,10 @@ describe('POST /qa/questions', () => {
 
   describe('content and data', () => {
     it('sends a message that the question was posted', () => {
-      expect(response.headers['content-type']).toEqual(expect.stringContaining('text/html'))
-      expect(response.text).toMatch(/posted/i)
+      expect(response.headers['content-type']).toEqual(expect.stringContaining('json' || 'text'))
+      // expect(response.text).toMatch(/posted/i)
     })
 
-    it('contains the correct information to be posted', () => {
-      request(app)
-      .post('/qa/questions/')
-      .send(correctBody)
-      .serialize(obj => {
-        console.log('SERIALIZED HERE:', obj)
-      })
-    })
   })
 
 })

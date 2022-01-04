@@ -5,7 +5,7 @@ const services = require('../db/services.js');
 
 module.exports = {
   // List Questions
-  getQuestions: (req, res) => {
+  getQuestions: async (req, res) => {
     console.log('REQ QUERY IN GET QUESTIONS:', req.query);
     let productID = req.query.product_id;
     services.getAllQuestions(productID)

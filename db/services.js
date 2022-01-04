@@ -45,7 +45,7 @@ module.exports = {
         return mappedResult;
       })
       .catch(err => {
-      return err;
+      throw err;
     })
   },
 
@@ -74,7 +74,7 @@ module.exports = {
       return mappedResult;
     })
     .catch(err => {
-      return;
+      throw err;
     })
   },
 
@@ -99,11 +99,11 @@ module.exports = {
           return results;
         })
         .catch(err => {
-          return;
+          throw err;
         })
       })
       .catch(err => {
-        return;
+        throw err;
       })
   },
 
@@ -130,11 +130,11 @@ module.exports = {
         .then(results => {
           return results;
         }).catch(err => {
-          return;
+          throw err;
         })
       })
       .catch(err => {
-        return;
+        throw err;
       })
   },
 
