@@ -13,7 +13,7 @@ afterAll(async () => {
 })
 
 
-describe('Get all questions from DB', () => {
+describe('Get all answers for given question', () => {
 
   it('Fetches all answers by question id', async () => {
     console.log('TEST ANSWERS:', answers);
@@ -27,7 +27,7 @@ describe('Get all questions from DB', () => {
     expect(answers.results.length).toBeGreaterThan(0);
   })
 
-  it('Contains the correct data shape of answers', async () => {
+  it('Contains the correct shape of answer data', async () => {
     for (let answer of answers.results) {
       expect(typeof answer.answer_id).toBe('number');
       expect(typeof answer.body).toBe('string');

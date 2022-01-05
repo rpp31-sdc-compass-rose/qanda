@@ -4,6 +4,7 @@ const services = require('../db/services.js');
 
 
 module.exports = {
+
   // List Questions
   getQuestions: async (req, res) => {
     console.log('REQ QUERY IN GET QUESTIONS:', req.query);
@@ -43,13 +44,14 @@ module.exports = {
     services.postOneQuestion(req.body.product_id, req.body.body, req.body.name, req.body.email)
     .then(result => {
       console.log(result)
-      res.status(201).send(result)
+      res.status(201).send(`Question ${result.id} posted!`)
     })
     .catch(err => {
       console.log(err)
       res.status(500).send(err)
     })
   },
+
   // Add an Answer
   postAnswer: (req, res) => {
     console.log('POST ANSWER REQ PARAMS:', req.params)
@@ -58,7 +60,7 @@ module.exports = {
     services.postOneAnswer(questionID, req.body.body, req.body.name, req.body.email)
     .then(result => {
       console.log(result)
-      res.status(200).send(result)
+      res.status(200).send(`Answer ${result.id} posted!`)
     })
     .catch(err => {
       console.log(err)
@@ -70,33 +72,24 @@ module.exports = {
   helpfulQuestion: (req, res) => {
     console.log('REQ PARAMS IN HELPFUL QUESTION:', req.params);
     let questionID = req.params.question_id;
-    db.qandaCollection.updateOne({id: questionID},
-      { $inc:
-        { helpful: 1 }
-      })
-      .exec()
-      .then(results => {
-         console.log(results);
-         res.status(204).send(`Question ${questionID} marked as helpful!`)
-      })
-      .catch(err => {
-        console.log(err);
-        res.status(500).send(err);
-      })
+    services.putQuestionHelpful(questionID)
+    .then(results => {
+      console.log(results);
+      res.status(200).send(`Question ${questionID} marked as helpful!`);
+    })
+    .catch(err => {
+      res.status(500).send(err);
+    })
   },
 
   // Report a question
   reportQuestion: (req, res) => {
     console.log('REQ PARAMS IN REPORT QUESTION:', req.params);
     let questionID = req.params.question_id;
-    db.qandaCollection.updateOne({id: questionID},
-    { $inc:
-      { reported: 1 }
-    })
-    .exec()
+    services.putQuestionReported(questionID)
     .then(results => {
       console.log(results);
-      res.status(204).send(`Question ${questionID} reported!`);
+      res.status(200).send(`Question ${questionID} reported!`);
     })
     .catch(err => {
       console.log(err);
@@ -108,47 +101,25 @@ module.exports = {
   helpfulAnswer: (req, res) => {
     console.log('REQ PARAMS IN HELPFUL ANSWER:', req.params);
     let answerID = req.params.answer_id;
-    db.qandaCollection.updateOne(
-    {
-      "answers.id": answerID,
-      answers: { $elemMatch: {
-        id: answerID
-      }}
-    },
-    { $inc:
-      { "answers.$.helpful": 1
-      }
-    })
-    .exec()
+    services.putAnswerHelpful(answerID)
     .then(results => {
-      console.log(results)
-      res.status(204).send(`Answer ${answerID} marked as helpful!`);
+      console.log(results);
+      res.status(200).send(`Answer ${answerID} marked as helpful!`)
     })
     .catch(err => {
-      console.log(err)
+      console.log(err);
       res.status(500).send(err);
     })
   },
 
-  // Report an answers
+  // Report an answer
   reportAnswer: (req, res) => {
     console.log('REQ PARAMS IN REPORT ANSWER:', req.params);
     let answerID = req.params.answer_id;
-    db.qandaCollection.updateOne(
-    {
-      "answers.id": answerID,
-      answers: { $elemMatch: {
-        id: answerID
-      }}
-    },
-    { $inc:
-      { "answers.$.reported": 1
-      }
-    })
-    .exec()
+    services.putAnswerReported(answerID)
     .then(results => {
       console.log(results);
-      res.status(204).send(`Answer ${answerID} reported!`);
+      res.status(200).send(`Answer ${answerID} reported!`);
     })
     .catch(err => {
       console.log(err);

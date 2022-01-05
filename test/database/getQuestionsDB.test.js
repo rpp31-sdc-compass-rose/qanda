@@ -27,7 +27,7 @@ describe('Get all questions from DB', () => {
     expect(questions.results.length).toBeGreaterThan(0);
   })
 
-  it('Contains the correct data shape of questions', async () => {
+  it('Contains the correct shape of question data', async () => {
     for (let question of questions.results) {
       expect(typeof question.question_id).toBe('number');
       expect(typeof question.question_body).toBe('string');

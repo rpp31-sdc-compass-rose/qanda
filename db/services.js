@@ -109,6 +109,7 @@ module.exports = {
 
   postOneAnswer: (questionID, body, name, email) => {
     let latestAnswerID;
+    let postedAnswer;
     return db.qandaCollection.find().sort({"answers.id": -1}).limit(1)
       .then(result => {
         console.log(result);
@@ -127,8 +128,9 @@ module.exports = {
         }
         }})
         .exec()
-        .then(results => {
-          return results;
+        .then(result => {
+          result.id = latestAnswerID
+          return result;
         }).catch(err => {
           throw err;
         })
@@ -138,21 +140,75 @@ module.exports = {
       })
   },
 
-  putQuestionHelpful: () => {
-
+  putQuestionHelpful: (questionID) => {
+    return db.qandaCollection.updateOne({id: questionID},
+      { $inc:
+        { helpful: 1 }
+      })
+      .exec()
+      .then(results => {
+        return results;
+      })
+      .catch(err => {
+        throw err;
+      })
   },
 
-  putQuestionReported: () => {
-
+  putQuestionReported: (questionID) => {
+    return db.qandaCollection.updateOne({id: questionID},
+      { $inc:
+        { reported: 1 }
+      })
+      .exec()
+      .then(results => {
+        return results;
+      })
+      .catch(err => {
+        throw err;
+      })
   },
 
-  putAnswerHelpful: () => {
-
+  putAnswerHelpful: (answerID) => {
+    return db.qandaCollection.updateOne(
+      {
+        "answers.id": answerID,
+        answers: { $elemMatch: {
+          id: answerID
+        }}
+      },
+      { $inc:
+        { "answers.$.helpful": 1
+        }
+      })
+      .exec()
+      .then(results => {
+        console.log(results)
+        return results;
+      })
+      .catch(err => {
+        throw err;
+      })
   },
 
-  putAnswerReported: () => {
-
+  putAnswerReported: (answerID) => {
+    return db.qandaCollection.updateOne(
+      {
+        "answers.id": answerID,
+        answers: { $elemMatch: {
+          id: answerID
+        }}
+      },
+      { $inc:
+        { "answers.$.reported": 1
+        }
+      })
+      .exec()
+      .then(results => {
+        return results;
+      })
+      .catch(err => {
+        throw err;
+      })
   }
-
 
 }
