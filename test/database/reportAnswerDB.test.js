@@ -1,6 +1,6 @@
 const db = require('../../models/qandas.js');
 const dbhandler = require('../dbhandler.js');
-const { putAnswerHelpful } = require('../../db/services.js');
+const { putAnswerReported } = require('../../db/services.js');
 
 let answer;
 let answerID = 1;
@@ -17,7 +17,7 @@ describe('Marks an answer helpful', () => {
 
   it('Updates answer by answer id', async () => {
     let findAnswer = await db.qandaCollection.find({"answers.id": answerID});
-    let markAnswerHelpful = await putAnswerHelpful(answerID);
+    let markAnswerHelpful = await putAnswerReported(answerID);
     let updatedAnswer = await db.qandaCollection.find({"answers.id": answerID});
     console.log('TEST ANSWER:', updatedAnswer);
     console.log('FIND ANSWER:', findAnswer)
@@ -28,9 +28,9 @@ describe('Marks an answer helpful', () => {
   })
   it('Increments the helpful value by 1', async () => {
     let findAnswer = await db.qandaCollection.find({"answers.id": answerID});
-    let markAnswerHelpful = await putAnswerHelpful(answerID);
+    let markAnswerHelpful = await putAnswerReported(answerID);
     let updatedAnswer = await db.qandaCollection.find({"answers.id": answerID});
-    expect(updatedAnswer[0].answers[0].helpful - findAnswer[0].answers[0].helpful).toEqual(1);
+    expect(updatedAnswer[0].answers[0].reported - findAnswer[0].answers[0].reported).toEqual(1);
   })
   // it('Throws an error for the incorrect query', async () => {
   //   let incorrectID = 123456789123456789;

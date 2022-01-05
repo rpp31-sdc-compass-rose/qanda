@@ -17,7 +17,6 @@ afterAll(async () => {
 
 
 describe('Posts one question to DB', () => {
-
   it('Submits a question for a given product id', async () => {
     console.log('TEST QUESTION:', question);
     expect(question).toBeDefined();
@@ -43,6 +42,4 @@ describe('Posts one question to DB', () => {
     expect(typeof question.reported).toBe('number');
     expect(Array.isArray(question.answers)).toBe(true);
   })
-
-
 })

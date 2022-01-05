@@ -1,8 +1,24 @@
 const request = require('supertest');
 const app = require('../../server/app.js');
+const mongoose = require('mongoose');
+let testPort = 3001;
+let server;
 
+let response;
+let question_id;
+beforeAll(async () => {
+  server = await app.listen(testPort, () => {
+    console.log(`Test Server listening on port ${testPort}!`)
+  })
+  question_id = 2;
+  response = await request(app)
+    .get(`/qa/questions/${question_id}/answers`)
+})
 
-
+afterAll(async () => {
+  await mongoose.connection.close();
+  await server.close();
+})
 
 describe('GET /qa/questions/:question_id/answers', () => {
   describe('status codes', () => {
@@ -20,13 +36,7 @@ describe('GET /qa/questions/:question_id/answers', () => {
     })
   })
 
-  let response;
-  let question_id;
-  beforeAll(async () => {
-    question_id = 2;
-    response = await request(app)
-      .get(`/qa/questions/${question_id}/answers`)
-  })
+
   describe('content and data', () => {
     it('sends JSON content-type upon success', async () => {
       expect(response.headers['content-type']).toEqual(expect.stringContaining('json'));

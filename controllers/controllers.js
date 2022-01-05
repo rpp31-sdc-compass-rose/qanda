@@ -60,7 +60,7 @@ module.exports = {
     services.postOneAnswer(questionID, req.body.body, req.body.name, req.body.email)
     .then(result => {
       console.log(result)
-      res.status(200).send(`Answer ${result.id} posted!`)
+      res.status(201).send(`Answer ${result.id} posted!`)
     })
     .catch(err => {
       console.log(err)

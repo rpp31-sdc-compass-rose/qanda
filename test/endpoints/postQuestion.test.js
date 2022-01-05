@@ -1,5 +1,30 @@
 const request = require('supertest');
 const app = require('../../server/app.js');
+const mongoose = require('mongoose');
+let testPort = 3001;
+let server;
+
+let correctBody;
+let response;
+beforeAll(async () => {
+  server = await app.listen(testPort, () => {
+    console.log(`Test Server listening on port ${testPort}!`)
+  })
+  correctBody = {
+    body: 'Test Question Here!',
+    name: 'Tester123',
+    email: 'Tester123@gmail.com',
+    product_id: 1
+  };
+  response = await request(app)
+  .post('/qa/questions/')
+  .send(correctBody)
+})
+
+afterAll(async () => {
+  await mongoose.connection.close();
+  await server.close();
+})
 
 describe('POST /qa/questions', () => {
 
@@ -30,24 +55,11 @@ describe('POST /qa/questions', () => {
     })
   })
 
-  let correctBody;
-  let response;
-  beforeAll(async () => {
-    correctBody = {
-      body: 'Test Question Here!',
-      name: 'Tester123',
-      email: 'Tester123@gmail.com',
-      product_id: 1
-    };
-    response = await request(app)
-    .post('/qa/questions/')
-    .send(correctBody)
-  })
 
   describe('content and data', () => {
     it('sends a message that the question was posted', () => {
-      expect(response.headers['content-type']).toEqual(expect.stringContaining('json' || 'text'))
-      // expect(response.text).toMatch(/posted/i)
+      expect(response.headers['content-type']).toEqual(expect.stringContaining('text'));
+      expect(response.text).toMatch(/posted/i)
     })
 
   })

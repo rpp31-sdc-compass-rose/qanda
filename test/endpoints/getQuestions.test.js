@@ -1,23 +1,25 @@
 const request = require('supertest');
 const app = require('../../server/app.js');
+const mongoose = require('mongoose');
+let testPort = 3001;
+let server;
 
-// const mongoose = require('mongoose');
-// const server = require('../server/index.js');
+let response;
+let correctQuery;
+beforeAll(async () => {
+  server = await app.listen(testPort, () => {
+    console.log(`Test Server listening on port ${testPort}!`)
+  })
+  correctQuery = {product_id: 1, page: 1, count: 5};
+  response = await request(app)
+    .get('/qa/questions/')
+    .query(correctQuery)
+})
 
-// afterAll(async(done) => {
-//   // Closing the DB connection allows Jest to exit successfully.
-//   try {
-//     await server.close();
-//     await mongoose.connection.close();
-//     await app.close();
-//     done()
-//   } catch (error) {
-//     console.log(error);
-//     done()
-//   }
-//   // done()
-// })
-
+afterAll(async () => {
+  await mongoose.connection.close();
+  await server.close();
+})
 
 describe('GET /qa/questions/', () => {
   describe('status codes', () => {
@@ -37,14 +39,6 @@ describe('GET /qa/questions/', () => {
     })
   })
 
-  let response;
-  let correctQuery;
-  beforeAll(async () => {
-    correctQuery = {product_id: 1, page: 1, count: 5};
-    response = await request(app)
-      .get('/qa/questions/')
-      .query(correctQuery)
-  })
 
   describe('content and data', () => {
     it('sends JSON content-type upon success', async () => {
