@@ -1,8 +1,12 @@
 const request = require('supertest');
 const app = require('../../server/app.js');
 const mongoose = require('mongoose');
+// const { postOneAnswer } = require('../../db/services.js');
 let testPort = 3001;
 let server;
+
+// jest.mock('../../db/services.js');
+// postOneAnswer.mockResolvedValue('Answer 101 was posted!')
 
 let correctBody;
 let response;
@@ -20,6 +24,10 @@ beforeAll(async () => {
   .post(`/qa/questions/${correctBody.question_id}/answers`)
   .send(correctBody)
 })
+
+// afterEach(async () => {
+//   jest.clearAllMocks();
+// })
 
 afterAll(async () => {
   await mongoose.connection.close();
