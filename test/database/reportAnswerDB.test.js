@@ -26,7 +26,7 @@ describe('Marks an answer helpful', () => {
     expect(updatedAnswer).toBeDefined();
     expect(findAnswer[0].answers[0].id).toEqual(updatedAnswer[0].answers[0].id);
   })
-  it('Increments the helpful value by 1', async () => {
+  it('Increments the reported value by 1', async () => {
     let findAnswer = await db.qandaCollection.find({"answers.id": answerID});
     let markAnswerHelpful = await putAnswerReported(answerID);
     let updatedAnswer = await db.qandaCollection.find({"answers.id": answerID});
