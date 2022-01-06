@@ -38,8 +38,6 @@ describe('PUT /qa/questions/:question_id/helpful', () => {
       expect(response.headers['content-type']).toEqual(expect.stringContaining('text'));
       expect(response.text).toMatch(/helpful/i)
     })
-
   })
-
 
 })
