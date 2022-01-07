@@ -17,8 +17,8 @@ export let options = {
 }
 
 export default function () {
-  let product_id = Math.floor(Math.random() * (999777 - 900045) + 900045);
-  let res = http.get(`http://localhost:3030/qa/questions?product_id=${product_id}&page=1&count=5`);
+  let questionID = Math.floor(Math.random() * (3492872 - 3167346) + 3167346);
+  let res = http.put(`http://localhost:3030/qa/questions/${questionID}/report`);
 
   check(res, {
     'Status Code is 200': (r) => r.status === 200

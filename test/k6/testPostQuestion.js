@@ -17,14 +17,20 @@ export let options = {
 }
 
 export default function () {
-  let product_id = Math.floor(Math.random() * (999777 - 900045) + 900045);
-  let res = http.get(`http://localhost:3030/qa/questions?product_id=${product_id}&page=1&count=5`);
+  let productID = Math.floor(Math.random() * (999777 - 900045) + 900045);
+  let payload = {
+    product_id: productID,
+    body: 'Test question from K6!',
+    name: 'Person McTester',
+    email: 'pmctester@somemail.com'
+  }
+  let res = http.post(`http://localhost:3030/qa/questions`, payload);
 
   check(res, {
-    'Status Code is 200': (r) => r.status === 200
+    'Status Code is 200': (r) => r.status === 201
   })
 
-  if (res.status !== 200) {
+  if (res.status !== 201) {
     counterErrors.add(1);
   }
 

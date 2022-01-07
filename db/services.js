@@ -80,10 +80,13 @@ module.exports = {
 
   postOneQuestion: (productID, body, name, email) => {
     let latestQuestionID;
+    // .sort({id: -1}).limit(1)
+    // estimatedDocumentCount()
     return db.qandaCollection.find().sort({id: -1}).limit(1)
       .then(result => {
-        console.log(result[0].id)
-        latestQuestionID = result[0].id + 1;
+        // console.log('COUNT:', result)
+        currentCount = result[0].id;
+        latestQuestionID = currentCount + 1;
         return db.qandaCollection.create({
           id: latestQuestionID,
           product_id: productID,
@@ -112,9 +115,9 @@ module.exports = {
     let postedAnswer;
     return db.qandaCollection.find().sort({"answers.id": -1}).limit(1)
       .then(result => {
-        console.log(result);
+        // console.log(result);
         latestAnswerID = result[0].answers[result[0].answers.length - 1].id + 1;
-        console.log('LATEST ANSWER:', latestAnswerID);
+        // console.log('LATEST ANSWER:', latestAnswerID);
         return db.qandaCollection.updateOne({id: questionID}, { $addToSet: { answers: {
           id: latestAnswerID,
           question_id: questionID,
