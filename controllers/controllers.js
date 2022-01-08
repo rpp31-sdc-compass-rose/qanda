@@ -7,15 +7,15 @@ module.exports = {
 
   // List Questions
   getQuestions: async (req, res) => {
-    // console.log('REQ QUERY IN GET QUESTIONS:', req.query);
+    console.log('REQ QUERY IN GET QUESTIONS:', req.query);
     let productID = req.query.product_id;
     services.getAllQuestions(productID, req.query.page, req.query.count)
     .then(result => {
-      // console.log(result)
+      console.log(result)
       res.status(200).send(result)
     })
     .catch(err => {
-      // console.log(err)
+      console.log(err)
       res.status(500).send(err);
     })
 

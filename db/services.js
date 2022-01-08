@@ -6,6 +6,10 @@ module.exports = {
     return db.qandaCollection.find({product_id: productID}).limit(count)
     .then(result => {
       // console.log('LIST QUESTIONS RESULTS:', result)
+      if (!result.length) {
+        // console.log('IF RESULTS FALSY:', result)
+        return [];
+      }
         // let unixTime = result.date_written.toString().slice(0, -3);
         // let convertedDate = new Date(Number(unixTime) * 1000);
         let mappedResult = {
@@ -52,6 +56,10 @@ module.exports = {
   getAllAnswers: (questionID, page, count) => {
     return db.qandaCollection.find({"answers.question_id": questionID}, {"answers.id": 1, "answers.question_id": 1, "answers.body": 1, "answers.date_written": 1, "answers.answerer_name": 1, "answers.helpful": 1, "answers.photos": 1}).exec()
     .then(results => {
+      if (!results.length) {
+        // console.log('IF RESULTS FALSY:', result)
+        return [];
+      }
       // console.log('GET ANSWERS RESULT:', results);
       let mappedAnswers = results[0].answers.map(answer => {
         return {
