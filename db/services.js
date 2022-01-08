@@ -2,8 +2,8 @@ const db = require('../models/qandas.js');
 
 
 module.exports = {
-  getAllQuestions: (productID) => {
-    return db.qandaCollection.find({product_id: productID})
+  getAllQuestions: (productID, page, count) => {
+    return db.qandaCollection.find({product_id: productID}).limit(count)
     .then(result => {
       // console.log('LIST QUESTIONS RESULTS:', result)
         // let unixTime = result.date_written.toString().slice(0, -3);
@@ -84,9 +84,11 @@ module.exports = {
     // estimatedDocumentCount()
     return db.qandaCollection.find().sort({id: -1}).limit(1)
       .then(result => {
-        // console.log('COUNT:', result)
+        // console.log('LATEST DOC:', result)
         currentCount = result[0].id;
+        // console.log('CURRENT COUNT:', currentCount)
         latestQuestionID = currentCount + 1;
+        // console.log('INCREMENTED COUNT:', latestQuestionID)
         return db.qandaCollection.create({
           id: latestQuestionID,
           product_id: productID,

@@ -1,4 +1,5 @@
 // setup environment
+// require('newrelic');
 const dotenv = require('dotenv');
 const result = dotenv.config()
 

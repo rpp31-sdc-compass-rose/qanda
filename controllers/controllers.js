@@ -9,7 +9,7 @@ module.exports = {
   getQuestions: async (req, res) => {
     // console.log('REQ QUERY IN GET QUESTIONS:', req.query);
     let productID = req.query.product_id;
-    services.getAllQuestions(productID)
+    services.getAllQuestions(productID, req.query.page, req.query.count)
     .then(result => {
       // console.log(result)
       res.status(200).send(result)
