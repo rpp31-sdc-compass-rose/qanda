@@ -54,13 +54,13 @@ module.exports = {
   },
 
   getAllAnswers: (questionID, page, count) => {
-    return db.qandaCollection.find({"answers.question_id": questionID}, {"answers.id": 1, "answers.question_id": 1, "answers.body": 1, "answers.date_written": 1, "answers.answerer_name": 1, "answers.helpful": 1, "answers.photos": 1}).exec()
+    return db.qandaCollection.find({"answers.question_id": questionID}, {"answers.id": 1, "answers.question_id": 1, "answers.body": 1, "answers.date_written": 1, "answers.answerer_name": 1, "answers.helpful": 1, "answers.photos": 1}).limit(count).exec()
     .then(results => {
+      // console.log('GET ANSWERS RESULT:', results);
       if (!results.length) {
         // console.log('IF RESULTS FALSY:', result)
         return [];
       }
-      // console.log('GET ANSWERS RESULT:', results);
       let mappedAnswers = results[0].answers.map(answer => {
         return {
           "answer_id": answer.id,

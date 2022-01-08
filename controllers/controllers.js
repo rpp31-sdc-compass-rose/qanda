@@ -7,15 +7,15 @@ module.exports = {
 
   // List Questions
   getQuestions: async (req, res) => {
-    console.log('REQ QUERY IN GET QUESTIONS:', req.query);
+    // console.log('REQ QUERY IN GET QUESTIONS:', req.query);
     let productID = req.query.product_id;
     services.getAllQuestions(productID, req.query.page, req.query.count)
     .then(result => {
-      console.log(result)
+      // console.log(result)
       res.status(200).send(result)
     })
     .catch(err => {
-      console.log(err)
+      // console.log(err)
       res.status(500).send(err);
     })
 
@@ -43,11 +43,11 @@ module.exports = {
     // console.log('POST QUESTION REQ BODY:', req.body);
     services.postOneQuestion(req.body.product_id, req.body.body, req.body.name, req.body.email)
     .then(result => {
-      console.log(result)
+      // console.log(result)
       res.status(201).send(`Question ${result.id} posted!`)
     })
     .catch(err => {
-      console.log(err)
+      // console.log(err)
       res.status(500).send(err)
     })
   },
@@ -59,11 +59,11 @@ module.exports = {
     let questionID = req.params.question_id;
     services.postOneAnswer(questionID, req.body.body, req.body.name, req.body.email)
     .then(result => {
-      console.log(result)
+      // console.log(result)
       res.status(201).send(`Answer ${result.id} posted!`)
     })
     .catch(err => {
-      console.log(err)
+      // console.log(err)
       res.status(500).send(err)
     })
   },
