@@ -5,6 +5,7 @@
   "main": "server/index.js",
   "scripts": {
     "start": "nodemon index.js",
+    "start:production": "NODE_ENV=production nodemon index.js",
     "test": "jest --coverage --detectOpenHandles"
   },
   "repository": {
