@@ -5,7 +5,7 @@ if (process.env.NODE_ENV === 'development') {
   uri = 'mongodb://localhost:27017/qandaservice';
 }
 if (process.env.NODE_ENV === 'production') {
-  uri = 'productionURI';
+  uri = 'mongodb://172.31.28.128:27017/qandaservice';
 }
 
 mongoose.connect(uri)

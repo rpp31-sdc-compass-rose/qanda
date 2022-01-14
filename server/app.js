@@ -17,6 +17,9 @@ app.use(cookieParser());
 app.get('/', (req, res) => {
   res.status(200).send('Welcome to Atelier API!');
 })
+app.get('/loaderio-36074cfda9f7b2835861c4dce139e2e8.txt', (req, res) => {
+  res.sendFile('/home/ec2-user/qanda/server/loaderio-36074cfda9f7b2835861c4dce139e2e8.txt');
+});
 // get all questions by product_id
 app.get('/qa/questions/', controllers.getQuestions);
 
