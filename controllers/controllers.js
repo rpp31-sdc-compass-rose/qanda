@@ -1,7 +1,12 @@
 const db = require('../models/qandas.js');
 const services = require('../db/services.js');
 // const db = require('../db/index.js');
+const Redis = require('redis');
 
+const redisClient = Redis.createClient({url: 'redis://127.0.0.1:6379' });
+redisClient.connect();
+
+let defaultExpiration = 600;
 
 module.exports = {
 
@@ -9,16 +14,20 @@ module.exports = {
   getQuestions: async (req, res) => {
     // console.log('REQ QUERY IN GET QUESTIONS:', req.query);
     let productID = req.query.product_id;
-    services.getAllQuestions(productID, req.query.page, req.query.count)
-    .then(result => {
-      // console.log(result)
-      res.status(200).send(result)
-    })
-    .catch(err => {
-      // console.log(err)
-      res.status(500).send(err);
-    })
-
+    try {
+      let checkCache = await redisClient.get(`${productID}`)
+      if (checkCache) {
+        console.log('cached:', JSON.parse(checkCache))
+        res.status(200).send(JSON.parse(checkCache));
+      } else {
+        let dbQuestions = await services.getAllQuestions(productID, req.query.page, req.query.count);
+        redisClient.set(`${productID}`, JSON.stringify(dbQuestions))
+        res.status(200).send(dbQuestions)
+      }
+    } catch (error) {
+      console.log(error)
+      res.status(500).send(error)
+    }
   },
 
   // List Answers
