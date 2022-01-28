@@ -85,7 +85,7 @@ app.put('/qa/answers/:answer_id/report', controllers.reportAnswer);
 // export app for testing or using multiple databases
 module.exports = app;
 ```
-* Controllers separate HTTP and database logic, in clean async/await syntax:
+* Controllers separate HTTP and database logic, in clean async/await syntax; integrated with Redis:
 ```javascript
 // List Questions
   getQuestions: async (req, res) => {
@@ -96,7 +96,9 @@ module.exports = app;
         console.log(JSON.parse(checkCache))
         res.status(200).send(JSON.parse(checkCache));
       } else {
-        let dbQuestions = await services.getAllQuestions(productID, req.query.page, req.query.count);
+        let dbQuestions = await services.getAllQuestions(
+          productID, req.query.page, req.query.count
+          );
         redisClient.set(`${productID}`, JSON.stringify(dbQuestions))
         res.status(200).send(dbQuestions)
       }
@@ -245,10 +247,17 @@ export default function () {
 
 To run this service, adjust the .env file, use the production start script in package.json, and update your own database URI:
 
-```bash .env```:
-`API_KEY=<your API key here>`
+```.env```:
+```javascript
+API_KEY=<your API key here>
+```
 
-```bash db/index.js```:
+```package.json```:
+```javascript
+"start:production": "NODE_ENV=production nodemon index.js",
+```
+
+```db/index.js```:
 ```javascript
 let uri;
 if (process.env.NODE_ENV === 'development') {
@@ -276,7 +285,9 @@ if (process.env.NODE_ENV === 'production') {
 * [K6](https://k6.io/)
 * [New Relic](https://newrelic.com/)
 * [Loader](https://loader.io/)
+<br>
 Full Deployment:
+<br>
 * [NGINX](https://www.nginx.com/)
 * [Redis](https://redis.io/)
 
@@ -306,4 +317,16 @@ Javascript, Node.js, Express, NoSQL, MongoDB, ORDBMS, Mongoose, NGINX, Redis, K6
 ## 📷 Screenshots
 **Web Sequence Diagram**
 ![App Screenshot](https://drive.google.com/uc?export=view&id=1h8EZYawK8Hr5LMTVLhFu3M8Hz4KTrdD9)
+**Recommended: consolidate multiple collections into one**
+![App Screenshot](https://drive.google.com/uc?export=view&id=1hYqM3Ve2xZ9H_QM7Dvx4Mn4otfWI3Lw6)
+**High native code test coverage**
+![App Screenshot](https://drive.google.com/uc?export=view&id=1osRLi_iMJ2ZClzKSEaYONvn-QWmBBR6N)
+**Performant under load-testing**
+![App Screenshot](https://drive.google.com/uc?export=view&id=14lXQnMuNCT5-7nKFPIyNEf1z2HY0qsql)
+**Identify bottlenecks and record metrics with New Relic**
+![App Screenshot](https://drive.google.com/uc?export=view&id=18yp0beFTQZMyoN-MzCrL6vrDBNWbu_KD)
+**Configure NGINX to load-balance and cache in top of application layer**
+![App Screenshot](https://drive.google.com/uc?export=view&id=1d91I2fLMCySqxw8uCqfI6g0nx8Pd547V)
+**Enjoy 10,000 requests per second and beyond with dual-layer caching (optional)**
+![App Screenshot](https://drive.google.com/uc?export=view&id=1eiRrxjHC7fgkPl6Ab5XQntkuT4Odvhb6)
 
