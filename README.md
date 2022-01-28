@@ -315,18 +315,18 @@ Javascript, Node.js, Express, NoSQL, MongoDB, ORDBMS, Mongoose, NGINX, Redis, K6
 
 
 ## 📷 Screenshots
-### **Web Sequence Diagram:**
+* ### **Web Sequence Diagram:**
 ![App Screenshot](https://drive.google.com/uc?export=view&id=1h8EZYawK8Hr5LMTVLhFu3M8Hz4KTrdD9)
-### **Recommended: consolidate multiple collections into one:**
+* ### **Recommended: consolidate multiple collections into one:**
 ![App Screenshot](https://drive.google.com/uc?export=view&id=1hYqM3Ve2xZ9H_QM7Dvx4Mn4otfWI3Lw6)
-### **High native code test coverage:**
+* ### **High native code test coverage:**
 ![App Screenshot](https://drive.google.com/uc?export=view&id=1osRLi_iMJ2ZClzKSEaYONvn-QWmBBR6N)
-### **Performant under load-testing:**
+* ### **Performant under load-testing:**
 ![App Screenshot](https://drive.google.com/uc?export=view&id=14lXQnMuNCT5-7nKFPIyNEf1z2HY0qsql)
-### **Identify bottlenecks and record metrics with New Relic:**
+* ### **Identify bottlenecks and record metrics with New Relic:**
 ![App Screenshot](https://drive.google.com/uc?export=view&id=18yp0beFTQZMyoN-MzCrL6vrDBNWbu_KD)
-### **Configure NGINX to load-balance and cache in top of application layer:**
+* ### **Configure NGINX to load-balance and cache in top of application layer:**
 ![App Screenshot](https://drive.google.com/uc?export=view&id=1d91I2fLMCySqxw8uCqfI6g0nx8Pd547V)
-### **Enjoy 10,000 requests per second and beyond with dual-layer caching (optional):**
+* ### **Enjoy 10,000 requests per second and beyond with dual-layer caching (optional):**
 ![App Screenshot](https://drive.google.com/uc?export=view&id=1eiRrxjHC7fgkPl6Ab5XQntkuT4Odvhb6)
 
